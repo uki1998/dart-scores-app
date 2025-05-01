@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'UROS VS. FLORIS',
+      title: 'Dart scores',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: StartNewGameScreen(),
     );
@@ -20,7 +20,7 @@ class StartNewGameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Dart Scores')),
+      appBar: AppBar(title: Text('UROS VS. FLORIS')),
       body: Center(
         child: ElevatedButton(
           onPressed: () {

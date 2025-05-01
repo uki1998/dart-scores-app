@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'game.dart';
 
 class Player {
   final String imagePath;
@@ -41,8 +42,8 @@ class _PlayerSelectionScreenState extends State<PlayerSelectionScreen> {
               padding: EdgeInsets.all(20),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, // two players side by side
-                mainAxisSpacing: 20,
-                crossAxisSpacing: 20,
+                mainAxisSpacing: 300,
+                crossAxisSpacing: 300,
               ),
               itemCount: players.length,
               itemBuilder: (context, index) {
@@ -56,7 +57,7 @@ class _PlayerSelectionScreenState extends State<PlayerSelectionScreen> {
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: isSelected ? Colors.green : Colors.grey,
-                        width: 3,
+                        width: 5,
                       ),
                       borderRadius: BorderRadius.circular(15),
                     ),
@@ -73,8 +74,6 @@ class _PlayerSelectionScreenState extends State<PlayerSelectionScreen> {
                           ),
                         ),
                         SizedBox(height: 10),
-
-                        SizedBox(height: 10),
                       ],
                     ),
                   ),
@@ -87,7 +86,10 @@ class _PlayerSelectionScreenState extends State<PlayerSelectionScreen> {
               padding: EdgeInsets.all(20),
               child: ElevatedButton(
                 onPressed: () {
-                  // TODO: Navigate to the game screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Game()),
+                  );
                 },
                 child: Text('Start Game'),
               ),
