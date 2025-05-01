@@ -1,5 +1,22 @@
 import 'package:flutter/material.dart';
 import 'player_selection.dart';
+import 'checkout.dart';
+
+class _GameSnapshot {
+  final int p1Score;
+  final int p2Score;
+  final int p1Sets;
+  final int p2Sets;
+  final bool isP1Turn;
+
+  _GameSnapshot({
+    required this.p1Score,
+    required this.p2Score,
+    required this.p1Sets,
+    required this.p2Sets,
+    required this.isP1Turn,
+  });
+}
 
 class Game extends StatefulWidget {
   final Player player1;
@@ -27,6 +44,18 @@ class _GameState extends State<Game> {
 
   bool isPlayer1Turn = true;
   String currentInput = '';
+
+  int? prevPlayer1Score;
+  int? prevPlayer2Score;
+  int? prevPlayer1Sets;
+  int? prevPlayer2Sets;
+  bool? prevIsPlayer1Turn;
+
+  int _currentPlayerScore() {
+    return isPlayer1Turn ? player1Score : player2Score;
+  }
+
+  List<_GameSnapshot> history = [];
 
   @override
   void initState() {
@@ -56,7 +85,24 @@ class _GameState extends State<Game> {
 
     int enteredScore = int.tryParse(currentInput) ?? 0;
 
+    history.add(
+      _GameSnapshot(
+        p1Score: player1Score,
+        p2Score: player2Score,
+        p1Sets: player1Sets,
+        p2Sets: player2Sets,
+        isP1Turn: isPlayer1Turn,
+      ),
+    );
+
     setState(() {
+      // Save previous state before making changes
+      prevPlayer1Score = player1Score;
+      prevPlayer2Score = player2Score;
+      prevPlayer1Sets = player1Sets;
+      prevPlayer2Sets = player2Sets;
+      prevIsPlayer1Turn = isPlayer1Turn;
+
       if (isPlayer1Turn) {
         if (enteredScore <= player1Score) {
           player1Score -= enteredScore;
@@ -83,6 +129,21 @@ class _GameState extends State<Game> {
         }
       }
 
+      currentInput = '';
+    });
+  }
+
+  void handleUndo() {
+    if (history.isEmpty) return;
+
+    final last = history.removeLast();
+
+    setState(() {
+      player1Score = last.p1Score;
+      player2Score = last.p2Score;
+      player1Sets = last.p1Sets;
+      player2Sets = last.p2Sets;
+      isPlayer1Turn = last.isP1Turn;
       currentInput = '';
     });
   }
@@ -172,6 +233,11 @@ class _GameState extends State<Game> {
                 currentInput,
                 style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
               ),
+              if (_currentPlayerScore() <= 170)
+                Text(
+                  'CHECKOUT: ${checkoutSuggestions[_currentPlayerScore()] ?? '—'}',
+                  style: TextStyle(fontSize: 18, color: Colors.blueAccent),
+                ),
               SizedBox(height: 20),
 
               // Calculator layout
@@ -204,6 +270,18 @@ class _GameState extends State<Game> {
                     padding: EdgeInsets.symmetric(vertical: 16),
                   ),
                   child: Text('ENTER', style: TextStyle(fontSize: 20)),
+                ),
+              ),
+              SizedBox(height: 10),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: handleUndo,
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 16),
+                    backgroundColor: Colors.orange,
+                  ),
+                  child: Text('UNDO', style: TextStyle(fontSize: 20)),
                 ),
               ),
             ],
