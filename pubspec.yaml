@@ -60,6 +60,8 @@ flutter:
   assets:
     - assets/images/uros.png
     - assets/images/floris.png
+    - assets/images/uros3.png
+    - assets/images/floris3.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

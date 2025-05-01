@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Dart scores',
+      title: 'DART',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: StartNewGameScreen(),
     );
@@ -29,7 +29,7 @@ class StartNewGameScreen extends StatelessWidget {
               MaterialPageRoute(builder: (context) => PlayerSelectionScreen()),
             );
           },
-          child: Text('Start New Game'),
+          child: Text('NY MATCH'),
         ),
       ),
     );
